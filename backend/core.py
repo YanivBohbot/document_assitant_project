@@ -7,11 +7,16 @@ from langchain_classic.chains.retrieval import create_retrieval_chain
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
 from const import INDEX_NAME
+from .config import EMBEDDING_MODEL
 load_dotenv()
 
+
+
+
+
 def run_llm(query: str, chat_history: List[Dict[str, Any]] = []):
-    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-    docsearch = PineconeVectorStore(index_name=INDEX_NAME, embedding=embeddings)
+    _embeddings = OpenAIEmbeddings(model=EMBEDDING_MODEL)
+    docsearch = PineconeVectorStore(index_name=INDEX_NAME, embedding=_embeddings)
     chat = ChatOpenAI(verbose=True, temperature=0)
 
     rephrase_prompt = hub.pull("langchain-ai/chat-langchain-rephrase")

@@ -3,7 +3,7 @@ from typing import Set
 from backend.core import run_llm
 import streamlit as st
 
-st.header("LangChain Udemy Course- Documentation Helper Bot")
+st.header("LangChain - Documentation Helper Bot")
 
 
 prompt = st.text_input("Prompt", placeholder="Enter your prompt here..")
