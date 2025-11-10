@@ -34,7 +34,7 @@ def _ensure_pinecone_index():
 
 def ingest_docs() -> None:
     # 1) Load docs (ReadTheDocs local export or cloned dir)
-    loader = ReadTheDocsLoader(path="langchain-docs/langchain.readthedocs.io/en/latest")
+    loader = ReadTheDocsLoader(path="https://docs.langchain.com/oss/python/langchain/agents")
     raw_documents: List[Document] = loader.load()
     print(f"Loaded {len(raw_documents)} documents")
 
