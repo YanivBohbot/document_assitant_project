@@ -63,21 +63,28 @@ Two main components:
 ```bash
 git clone [(https://github.com/YanivBohbot/document_assitant_project/new/main)](https://github.com/YanivBohbot/document_assitant_project.git)
 cd <project-folder>
-
+```
+```bash
 pipenv install
 pipenv shell
+```
 
 ## Create .env
-
+```
 OPENAI_API_KEY=sk-xxxxxxx
-
-
-## Run the App
-streamlit run main.py
 PINECONE_API_KEY=pcn-xxxxxxx
 PINECONE_INDEX_NAME=langchain-docs
 CHAT_MODEL=gpt-4o-mini
 CHAT_TEMPERATURE=0
+```
 
 ## Ingest the documentation (run once)
+```
 python ingestion.py
+```
+## Run the App
+```
+streamlit run main.py
+```
+
+
