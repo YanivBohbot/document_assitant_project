@@ -6,13 +6,15 @@ from typing import Any, Dict, List, Optional, Sequence
 
 from dotenv import load_dotenv
 
-from langchain import hub
+from langchainhub import Client
 from langchain_classic.chains.combine_documents import create_stuff_documents_chain
 from langchain_classic.chains.history_aware_retriever import create_history_aware_retriever
 from langchain_classic.chains.retrieval import create_retrieval_chain
 from langchain_core.documents import Document
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
+from langchain_core.prompts import ChatPromptTemplate
+
 
 # Pinecone (optional at runtime)
 try:
@@ -71,9 +73,30 @@ def _build_history_aware_rag_chain(k: int = 4):
     """
     llm = ChatOpenAI(model=CHAT_MODEL, temperature=CHAT_TEMPERATURE)
     retriever = _get_retriever(k=k)
+    
+    # client = Client()
+    # rephrase_prompt = client.pull("langchain-ai/chat-langchain-rephrase")
+    
+    # if isinstance(rephrase_prompt, str):
+    #     rephrase_prompt = ChatPromptTemplate.from_template(rephrase_prompt)
+        
+    # qa_prompt = client.pull("langchain-ai/retrieval-qa-chat")
+    # if isinstance(qa_prompt, str):
+    #     qa_prompt = ChatPromptTemplate.from_template(qa_prompt)
+    
+    # Rephrase prompt MUST accept {input} and {chat_history}
+    rephrase_prompt = ChatPromptTemplate.from_messages([
+        ("system", "Rewrite the user's question to be standalone using the chat history."),
+        ("human", "Chat history:\n{chat_history}\n\nUser question:\n{input}\n\nRewrite the question only:")
+    ])
 
-    rephrase_prompt = hub.pull("langchain-ai/chat-langchain-rephrase")
-    qa_prompt = hub.pull("langchain-ai/retrieval-qa-chat")
+    # QA prompt MUST accept {input} and {context}
+    qa_prompt = ChatPromptTemplate.from_messages([
+        ("system",
+         "You are a helpful RAG assistant. Use the provided context to answer. "
+         "If the answer is not in the context, say you don't know."),
+        ("human", "Question: {input}\n\nContext:\n{context}")
+    ])
 
     stuff_chain = create_stuff_documents_chain(llm, qa_prompt)
     hist_aware = create_history_aware_retriever(llm=llm, retriever=retriever, prompt=rephrase_prompt)
