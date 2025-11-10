@@ -8,8 +8,8 @@ load_dotenv()
 CHROMA_DIR = os.getenv("CHROMA_DIR", "chroma_db")
 
 # Models
-EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
-CHAT_MODEL      = os.getenv("CHAT_MODEL", "gpt-4o-mini")
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL")
+CHAT_MODEL      = os.getenv("CHAT_MODEL")
 CHAT_TEMPERATURE = float(os.getenv("CHAT_TEMPERATURE", "0"))
 
 # External services
@@ -18,4 +18,4 @@ TAVILY_API_KEY    = os.getenv("TAVILY_API_KEY")
 
 # Pinecone v3
 PINECONE_API_KEY    = os.getenv("PINECONE_API_KEY")
-PINECONE_INDEX_NAME = os.getenv("PINECONE_INDEX_NAME", "langchain-docs-idx")
+PINECONE_INDEX_NAME = os.getenv("PINECONE_INDEX_NAME")
