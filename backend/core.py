@@ -93,8 +93,11 @@ def _build_history_aware_rag_chain(k: int = 4):
     # QA prompt MUST accept {input} and {context}
     qa_prompt = ChatPromptTemplate.from_messages([
         ("system",
-         "You are a helpful RAG assistant. Use the provided context to answer. "
-         "If the answer is not in the context, say you don't know."),
+         "You are a helpful RAG assistant. Use the provided context to answer."
+         "Answer ONLY using the provided context."
+         "If the answer is not present in the context or the question is out-of-scope, reply exactly: 'I don't know.' "
+         "Do not fabricate. Only cite sources when you used the context."
+        ),
         ("human", "Question: {input}\n\nContext:\n{context}")
     ])
 
@@ -117,6 +120,18 @@ def run_llm(query: str, chat_history: Optional[List[Dict[str, Any]]] = None) -> 
     chain = _build_history_aware_rag_chain(k=4)
     result = chain.invoke({"input": query, "chat_history": chat_history})
     docs: List[Document] = result.get("context", []) or []
+    
+    answer: str = result.get("answer") or ""
+
+    # If no docs OR the model declined to answer, suppress sources
+    if (not docs) or ("i don't know" in answer.lower()):
+        return {
+            "answer": answer,
+            "context": [],        # clear context when we didn't rely on it
+            "sources": [],
+            "input": query,
+        }
+    
     return {
         "answer": result.get("answer"),
         "context": docs,
