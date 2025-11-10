@@ -61,7 +61,7 @@ Two main components:
 ## ✅ 🔧 Installation
 
 ```bash
-git clone (https://github.com/YanivBohbot/document_assitant_project/new/main)
+git clone [(https://github.com/YanivBohbot/document_assitant_project/new/main)](https://github.com/YanivBohbot/document_assitant_project.git)
 cd <project-folder>
 
 pipenv install
