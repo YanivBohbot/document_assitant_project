@@ -1,4 +1,4 @@
-# 🚀 LangChain Documentation Helper Bot
+# 🚀 LangChain Documentation Helper ChatBot
 
 AI-powered assistant that answers technical questions directly from the official LangChain documentation using Retrieval-Augmented Generation (RAG).  
 Built with **Python, Streamlit, OpenAI, and Pinecone/Chroma**.
